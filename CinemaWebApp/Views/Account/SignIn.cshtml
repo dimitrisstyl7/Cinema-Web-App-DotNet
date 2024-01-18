@@ -1,36 +1,38 @@
 ﻿@model CinemaWebApp.Models.User
 
 @{
-    ViewData["Title"] = "Login";
+    ViewData["Title"] = "Sign in";
 }
 
-<div class="container-fluid vh-100">
-    <div class="" style="margin-top:200px">
+<div class="container-fluid">
+    <div style="margin-top:200px">
         <div class="rounded d-flex justify-content-center">
             <div class="col-md-4 col-sm-12 shadow-lg p-5 bg-light">
                 <div class="text-center">
-                    <h3 class="text-primary">Login</h3>
+                    <h3 class="text-primary">Sign in</h3>
                 </div>
                 <div class="p-4">
-                    <form asp-action="Login">
+                    <form asp-action="SignIn">
                         <div class="input-group mb-3">
                             <span class="input-group-text bg-primary">
                                 <i class="bi bi-envelope text-white"></i>
                             </span>
                             <input asp-for="Email" type="email" class="form-control" placeholder="Email">
+                            <span asp-validation-for="Email" class="text-danger"/>
                         </div>
                         <div class="input-group mb-3">
                             <span class="input-group-text bg-primary">
                                 <i class="bi bi-key-fill text-white"></i>
                             </span>
                             <input asp-for="Password" type="password" class="form-control" placeholder="Password">
+                            <span asp-validation-for="Password" class="text-danger"/>
                         </div>
                         <div class="d-grid col-12 mx-auto">
-                            <button class="btn btn-primary" type="submit"><span></span> Login</button>
+                            <button class="btn btn-primary" type="submit"><span></span>Sign in</button>
                         </div>
                         <p class="text-center mt-3">
                             Don't have an account?
-                            <a asp-action="Register" asp-controller="Account" class="text-primary">Register</a>
+                            <a asp-action="SignUp" asp-controller="Account" class="text-primary">Sign up</a>
                         </p>
                     </form>
                 </div>
