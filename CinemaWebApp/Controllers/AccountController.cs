@@ -11,6 +11,11 @@ namespace CinemaWebApp.Controllers
             return View();
         }
 
+        public IActionResult Register()
+        {
+            return View();
+        }
+
         private readonly CinemaAppDBContext _context;
 
         public AccountController(CinemaAppDBContext context)
@@ -36,8 +41,28 @@ namespace CinemaWebApp.Controllers
                 return NotFound("Invalid password");
             }
 
-            return RedirectToAction("Index", "Privacy");
+            return RedirectToAction("Index", "Home");
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Register([Bind("Username, Firstname, Lastname, Email, Password")] User user)
+        {
+            var db_user = await _context.Users.FirstOrDefaultAsync(u => u.Email == user.Email);
+
+            if (db_user == null)
+            {
+                return NotFound("User not found");
+            }
+
+            bool isPasswordValid = BCrypt.Net.BCrypt.Verify(user.Password, db_user.Password);
+
+            if (!isPasswordValid)
+            {
+                return NotFound("Invalid password");
+            }
+
+            return RedirectToAction("Index", "Home");
+        }
     }
 }
