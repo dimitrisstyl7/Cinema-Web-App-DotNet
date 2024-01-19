@@ -1,0 +1,49 @@
+﻿@model CinemaWebApp.Models.User
+
+@{
+    ViewData["Title"] = "Sign up";
+}
+
+<div class="container-fluid">
+    <div style="margin-top:100px">
+        <div class="rounded d-flex justify-content-center">
+            <div class="col-md-4 col-sm-12 shadow-lg p-5 bg-light">
+                <div class="text-center">
+                    <h3 class="text-primary">Create Account</h3>
+                </div>
+                <div class="p-4">
+                    <form asp-action="SignUp">
+                        <div class="input-group">
+                            <input asp-for="Username" type="text" class="form-control" placeholder="Username">
+                        </div>
+                        <span asp-validation-for="Username" class="text-danger"></span>
+                        <div class="input-group mt-3">
+                            <input asp-for="FirstName" type="text" class="form-control" placeholder="First name">
+                        </div>
+                        <span asp-validation-for="FirstName" class="text-danger"></span>
+                        <div class="input-group mt-3">
+                            <input asp-for="LastName" type="text" class="form-control" placeholder="Last name">
+                        </div>
+                        <span asp-validation-for="LastName" class="text-danger"></span>
+                        <div class="input-group mt-3">
+                            <input asp-for="Email" type="email" class="form-control" placeholder="Email">
+                        </div>
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                        <div class="input-group mt-3">
+                            <input asp-for="Password" type="password" class="form-control" placeholder="Password">
+                        </div>
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                        <div class="d-grid col-12 mx-auto">
+                            <button class="btn btn-primary mt-3" type="submit"><span></span>Sign up</button>
+                        </div>
+                        <p class="text-center mt-3">
+                            Already have an account?
+                            <a asp-action="SignIn" asp-controller="Account" class="text-primary">Sign in</a>
+                        </p>
+                        <p class="text-danger text-center">@ViewData["Error"]</p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
