@@ -30,18 +30,17 @@ namespace CinemaWebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> SignIn([Bind("Email, Password")] User user)
         {
-            var db_user = await _context.Users.FirstOrDefaultAsync(u => u.Email == user.Email);
+            ModelState.Remove(nameof(user.FirstName));
+            ModelState.Remove(nameof(user.LastName));
+            ModelState.Remove(nameof(user.Username));
+            ModelState.Remove(nameof(user.Role));
 
-            if (db_user == null)
+            var db_user = ModelState.IsValid ? await _context.Users.FirstOrDefaultAsync(u => u.Email == user.Email) : null;
+
+            if (db_user == null || !BCrypt.Net.BCrypt.Verify(user.Password, db_user.Password))
             {
-                return NotFound("User not found");
-            }
-
-            bool isPasswordValid = BCrypt.Net.BCrypt.Verify(user.Password, db_user.Password);
-
-            if (!isPasswordValid)
-            {
-                return NotFound("Invalid password");
+                ViewData["Error"] = "Wrong credentials, please try again.";
+                return View(user);
             }
 
             return RedirectToAction("Details", "Users", new { id = db_user.Id });

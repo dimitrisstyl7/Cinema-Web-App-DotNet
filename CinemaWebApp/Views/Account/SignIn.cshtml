@@ -13,27 +13,27 @@
                 </div>
                 <div class="p-4">
                     <form asp-action="SignIn">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                         <div class="input-group mb-3">
                             <span class="input-group-text bg-primary">
                                 <i class="bi bi-envelope text-white"></i>
                             </span>
                             <input asp-for="Email" type="email" class="form-control" placeholder="Email">
-                            <span asp-validation-for="Email" class="text-danger"/>
                         </div>
                         <div class="input-group mb-3">
                             <span class="input-group-text bg-primary">
                                 <i class="bi bi-key-fill text-white"></i>
                             </span>
                             <input asp-for="Password" type="password" class="form-control" placeholder="Password">
-                            <span asp-validation-for="Password" class="text-danger"/>
                         </div>
-                        <div class="d-grid col-12 mx-auto">
-                            <button class="btn btn-primary" type="submit"><span></span>Sign in</button>
+                        <div class="d-grid col-12 mx-auto mb-3">
+                            <button class="btn btn-primary" type="submit">Sign in</button>
                         </div>
                         <p class="text-center mt-3">
                             Don't have an account?
                             <a asp-action="SignUp" asp-controller="Account" class="text-primary">Sign up</a>
                         </p>
+                        <p class="text-danger text-center">@ViewData["Error"]</p>
                     </form>
                 </div>
             </div>
