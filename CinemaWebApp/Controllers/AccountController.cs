@@ -25,6 +25,12 @@ namespace CinemaWebApp.Controllers
             return View();
         }
 
+        // GET: Sign out user
+        public IActionResult SignOut()
+        {
+            return RedirectToAction(nameof(SignIn));
+        }
+
         // POST: Sign in
         [HttpPost]
         [ValidateAntiForgeryToken]
