@@ -35,7 +35,8 @@ namespace CinemaWebApp.Controllers
             ModelState.Remove(nameof(user.Username));
             ModelState.Remove(nameof(user.Role));
 
-            var db_user = ModelState.IsValid ? await _context.Users.FirstOrDefaultAsync(u => u.Email == user.Email) : null;
+            var db_user = ModelState.IsValid ?
+                await _context.Users.Include(r => r.Role).FirstOrDefaultAsync(u => u.Email == user.Email) : null;
 
             if (db_user == null || !BCrypt.Net.BCrypt.Verify(user.Password, db_user.Password))
             {
@@ -43,7 +44,18 @@ namespace CinemaWebApp.Controllers
                 return View(user);
             }
 
-            return RedirectToAction("Details", "Users", new { id = db_user.Id });
+            switch (db_user.Role.Name)
+            {
+                case "customer":
+                    return RedirectToAction("Index", "Customer");
+                case "app_admin":
+                    return RedirectToAction("Index", "AppAdmin");
+                case "content_admin":
+                    return RedirectToAction("Index", "ContentAdmin");
+                default:
+                    ViewData["Error"] = "Something went wrong, please try again.";
+                    return View(user);
+            }
         }
 
         // POST: Sign up
