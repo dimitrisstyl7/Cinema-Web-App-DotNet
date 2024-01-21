@@ -53,11 +53,23 @@ namespace CinemaWebApp.Controllers
             switch (db_user.Role.Name)
             {
                 case "customer":
-                    return RedirectToAction("Index", "Customer");
+                    int customerId = await _context.Customers
+                        .Where(c => c.UserId == db_user.Id)
+                        .Select(c => c.Id)
+                        .FirstOrDefaultAsync();
+                    return RedirectToAction("Index", "Customer", new { id = customerId });
                 case "app_admin":
-                    return RedirectToAction("Index", "AppAdmin");
+                    int appAdminId = await _context.AppAdmins
+                        .Where(aa => aa.UserId == db_user.Id)
+                        .Select(aa => aa.Id)
+                        .FirstOrDefaultAsync();
+                    return RedirectToAction("Index", "AppAdmin", new { id = appAdminId });
                 case "content_admin":
-                    return RedirectToAction("Index", "ContentAdmin");
+                    int contentAdminId = await _context.ContentAdmins
+                        .Where(ca => ca.UserId == db_user.Id)
+                        .Select(ca => ca.Id)
+                        .FirstOrDefaultAsync();
+                    return RedirectToAction("Index", "ContentAdmin", new { id = contentAdminId });
                 default:
                     ViewData["Error"] = "Something went wrong, please try again.";
                     return View(user);
