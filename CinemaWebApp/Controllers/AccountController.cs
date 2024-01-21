@@ -83,7 +83,7 @@ namespace CinemaWebApp.Controllers
             _context.Add(user);
             await _context.SaveChangesAsync();
 
-            return View(nameof(SignIn));
+            return RedirectToAction(nameof(SignIn));
         }
     }
 }
