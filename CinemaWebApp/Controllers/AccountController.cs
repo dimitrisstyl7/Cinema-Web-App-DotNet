@@ -96,7 +96,7 @@ namespace CinemaWebApp.Controllers
                 return View(user);
             }
 
-            user.RoleId = 1; // 1 == User
+            user.RoleId = 1; // 1 == customer
             user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password, workFactor: 10);
             _context.Add(user);
             await _context.SaveChangesAsync();
