@@ -1,0 +1,46 @@
+﻿@model IEnumerable<IGrouping<Cinema, ContentAdmin>>
+
+@{
+    ViewData["Title"] = "Application Admin";
+}
+
+<h1 class="mb-4">Registered Content Admins</h1>
+<h6>
+    <a asp-action="Create" asp-controller="ContentAdmins" asp-route-id="@ViewBag.AppAdminId">Create New</a>
+</h6>
+<p class="text-secondary">
+    @ViewBag.Message
+</p>
+@foreach (var group in Model)
+{
+    <br />
+    <h3 class="text-success">@group.Key.Name</h3>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(modelItem => group.First().User.FullName)
+                </th>
+                <th>@Html.DisplayNameFor(modelItem => group.First().User.Email)</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in group)
+            {
+                <tr>
+                    <td class="col-4">
+                        @Html.DisplayFor(modelItem => item.User.FullName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.User.Email)
+                    </td>
+                    <td>
+                        <a asp-action="Delete" asp-controller="ContentAdmins" asp-route-id="@item.Id">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+        <tfoot></tfoot>
+    </table>
+}
