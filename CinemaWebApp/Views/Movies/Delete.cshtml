@@ -30,10 +30,10 @@
             @Html.DisplayFor(model => model.Description)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ReleaseDate)
+            @Html.DisplayNameFor(model => model.ReleaseYear)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ReleaseDate)
+            @Html.DisplayFor(model => model.ReleaseYear)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Director)
@@ -52,6 +52,6 @@
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id" />
         <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-controller="ContentAdmins" asp-action="Index" asp-route-id="@Model.ContentAdminId">Back to List</a>
+        <a asp-controller="ContentAdmins" asp-action="Index">Back to List</a>
     </form>
 </div>
