@@ -12,7 +12,7 @@ insert into [User] (role_id, username, email, first_name, last_name, password)
 values (1, 'customer1', 'customer1@email.com', 'Customer', 'One',
         '$2a$10$elKRD7GTtyImpjd155Q9eOXJxJha4mVxe0k4zyxmPehAU6SpZ6dBa');
 insert into [User] (role_id, username, email, first_name, last_name, password)
-values (2, 'appAdmin', 'appAdmin1@email.com', 'App', 'Admin',
+values (2, 'appAdmin', 'appAdmin@email.com', 'App', 'Admin',
         '$2a$10$RGZsOH9pX4TcPSs0OMpMTuLMxWvKKX1HB0FEtAnR5aXjDYTOg7wSa');
 insert into [User] (role_id, username, email, first_name, last_name, password)
 values (3, 'contentAdmin1', 'contentAdmin1@email.com', 'ContentAdmin', 'One',
