@@ -29,7 +29,6 @@ namespace CinemaWebApp.Controllers
             
             var movies = await _context.Movies
                 .Include(m => m.Genre)
-                .Where(m => m.ContentAdminId == id)
                 .ToListAsync();
             ViewData["ContentAdminId"] = id;
             return View(movies);
