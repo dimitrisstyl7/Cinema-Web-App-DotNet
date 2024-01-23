@@ -1,11 +1,13 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
 namespace CinemaWebApp.Models;
 
 [Table("AppAdmin")]
-[Index("UserId", Name = "UQ__AppAdmin__B9BE370E0982737A", IsUnique = true)]
+[Index("UserId", Name = "UQ__AppAdmin__B9BE370E508576A7", IsUnique = true)]
 public partial class AppAdmin
 {
     [Key]
