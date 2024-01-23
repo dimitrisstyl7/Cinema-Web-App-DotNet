@@ -1,11 +1,13 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
 namespace CinemaWebApp.Models;
 
 [Table("Role")]
-[Index("Name", Name = "UQ__Role__72E12F1B7E96D9B6", IsUnique = true)]
+[Index("Name", Name = "UQ__Role__72E12F1B5F5BA885", IsUnique = true)]
 public partial class Role
 {
     [Key]
