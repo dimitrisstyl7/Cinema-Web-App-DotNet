@@ -27,7 +27,6 @@ namespace CinemaWebApp.Controllers
             }
 
             var movie = await _context.Movies
-                .Include(m => m.ContentAdmin)
                 .Include(m => m.Genre)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (movie == null)
@@ -53,14 +52,13 @@ namespace CinemaWebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ContentAdminId,GenreId,Title,Duration,Content,Description,ReleaseDate,Director")] Movie movie)
         {
-            ModelState.Remove(nameof(movie.ContentAdmin));
             ModelState.Remove(nameof(movie.Genre));
 
             if (ModelState.IsValid)
             {
                 _context.Add(movie);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Index","ContentAdmins", new { id = movie.ContentAdminId });
+                return RedirectToAction("Index","ContentAdmins"/*, new { id = movie.ContentAdminId }*/);
             }
             ViewData["GenreId"] = new SelectList(_context.Genres, "Id", "Name", movie.GenreId);
             return View(movie);
@@ -90,7 +88,6 @@ namespace CinemaWebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,ContentAdminId,GenreId,Title,Duration,Content,Description,ReleaseDate,Director")] Movie movie)
         {
-            ModelState.Remove(nameof(movie.ContentAdmin));
             ModelState.Remove(nameof(movie.Genre));
 
             if (id != movie.Id)
@@ -116,7 +113,7 @@ namespace CinemaWebApp.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction("Index", "ContentAdmins", new { id = movie.ContentAdminId });
+                return RedirectToAction("Index", "ContentAdmins"/*, new { id = movie.ContentAdminId }*/);
             }
             ViewData["GenreId"] = new SelectList(_context.Genres, "Id", "Name", movie.GenreId);
             return View(movie);
@@ -131,7 +128,6 @@ namespace CinemaWebApp.Controllers
             }
 
             var movie = await _context.Movies
-                .Include(m => m.ContentAdmin)
                 .Include(m => m.Genre)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (movie == null)
@@ -148,14 +144,13 @@ namespace CinemaWebApp.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var movie = await _context.Movies.FindAsync(id);
-            var userId = movie.ContentAdminId;
             if (movie != null)
             {
                 _context.Movies.Remove(movie);
             }
 
             await _context.SaveChangesAsync();
-            return RedirectToAction("Index", "ContentAdmins", new { id = userId });
+            return RedirectToAction("Index", "ContentAdmins"/*, new { id = movie.ContentAdminId }*/);
         }
 
         private bool MovieExists(int id)
