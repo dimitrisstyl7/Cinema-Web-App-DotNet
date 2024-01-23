@@ -20,11 +20,14 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
+                        <li class="nav-item" @(ShouldShow() ? "" : "hidden")>
                             <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="SignIn">Sign in</a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item" @(ShouldShow() ? "" : "hidden")>
                             <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="SignUp">Sign up</a>
+                        </li>
+                        <li class="nav-item" @(!ShouldShow() ? "" : "hidden")>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="SignOut">Sign out</a>
                         </li>
                     </ul>
                 </div>
@@ -41,7 +44,7 @@
         <div class="container">
             <div class="row">
                 <div class="col text-start">
-                    &copy; 2024 - Cinema
+                    &copy; 2024 - Cinema Web Application
                 </div>
                 <div class="col text-end">
                     <a href="https://github.com/Apostolis2002" target="_blank">Apostolis Siampanis</a> |
@@ -57,3 +60,11 @@
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
+
+@functions {
+    private bool ShouldShow()
+    {
+        var currentPath = Context.Request.Path.ToString();
+            return currentPath.Equals("/") || currentPath.StartsWith("/Home") || currentPath.StartsWith("/Account");
+    }
+};

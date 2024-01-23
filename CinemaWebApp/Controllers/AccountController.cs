@@ -25,6 +25,12 @@ namespace CinemaWebApp.Controllers
             return View();
         }
 
+        // GET: Sign out user
+        public IActionResult SignOut()
+        {
+            return RedirectToAction(nameof(SignIn));
+        }
+
         // POST: Sign in
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -35,7 +41,8 @@ namespace CinemaWebApp.Controllers
             ModelState.Remove(nameof(user.Username));
             ModelState.Remove(nameof(user.Role));
 
-            var db_user = ModelState.IsValid ? await _context.Users.FirstOrDefaultAsync(u => u.Email == user.Email) : null;
+            var db_user = ModelState.IsValid ?
+                await _context.Users.Include(r => r.Role).FirstOrDefaultAsync(u => u.Email == user.Email) : null;
 
             if (db_user == null || !BCrypt.Net.BCrypt.Verify(user.Password, db_user.Password))
             {
@@ -43,7 +50,30 @@ namespace CinemaWebApp.Controllers
                 return View(user);
             }
 
-            return RedirectToAction("Details", "Users", new { id = db_user.Id });
+            switch (db_user.Role.Name)
+            {
+                case "customer":
+                    int customerId = await _context.Customers
+                        .Where(c => c.UserId == db_user.Id)
+                        .Select(c => c.Id)
+                        .FirstOrDefaultAsync();
+                    return RedirectToAction("Index", "Customers", new { id = customerId });
+                case "app_admin":
+                    int appAdminId = await _context.AppAdmins
+                        .Where(aa => aa.UserId == db_user.Id)
+                        .Select(aa => aa.Id)
+                        .FirstOrDefaultAsync();
+                    return RedirectToAction("Index", "AppAdmins");
+                case "content_admin":
+                    int contentAdminId = await _context.ContentAdmins
+                        .Where(ca => ca.UserId == db_user.Id)
+                        .Select(ca => ca.Id)
+                        .FirstOrDefaultAsync();
+                    return RedirectToAction("Index", "ContentAdmins", new { id = contentAdminId });
+                default:
+                    ViewData["Error"] = "Something went wrong, please try again.";
+                    return View(user);
+            }
         }
 
         // POST: Sign up
@@ -66,12 +96,12 @@ namespace CinemaWebApp.Controllers
                 return View(user);
             }
 
-            user.RoleId = 1; // 1 == User
+            user.RoleId = 1; // 1 == customer
             user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password, workFactor: 10);
             _context.Add(user);
             await _context.SaveChangesAsync();
 
-            return View(nameof(SignIn));
+            return RedirectToAction(nameof(SignIn));
         }
     }
 }

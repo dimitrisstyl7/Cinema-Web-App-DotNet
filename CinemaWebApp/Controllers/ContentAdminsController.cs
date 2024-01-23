@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -18,6 +18,7 @@ namespace CinemaWebApp.Controllers
             _context = context;
         }
 
+
         // GET: ContentAdmins/Id
         public async Task<IActionResult> Index(int? id)
         {
@@ -34,145 +35,54 @@ namespace CinemaWebApp.Controllers
             return View(movies);
         }
 
-        // GET: ContentAdmins/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var contentAdmin = await _context.ContentAdmins
-                .Include(c => c.Cinema)
-                .Include(c => c.User)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (contentAdmin == null)
-            {
-                return NotFound();
-            }
-
-            return View(contentAdmin);
-        }
-
         // GET: ContentAdmins/Create
         public IActionResult Create()
         {
-            ViewData["CinemaId"] = new SelectList(_context.Cinemas, "Id", "Id");
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id");
+            ViewData["CinemaId"] = new SelectList(_context.Cinemas, "Id", "Name");
             return View();
         }
-
-        // POST: ContentAdmins/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,UserId,CinemaId")] ContentAdmin contentAdmin)
+        
+        public async Task<IActionResult> Create([Bind("User, CinemaId")] ContentAdmin contentAdmin)
         {
-            if (ModelState.IsValid)
+            ModelState.Remove(nameof(ContentAdmin.Cinema));
+            ModelState.Remove(nameof(ContentAdmin.User) + "." + nameof(ContentAdmin.User.Role)); // User.Role
+
+            if (!ModelState.IsValid)
             {
-                _context.Add(contentAdmin);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                ViewData["CinemaId"] = new SelectList(_context.Cinemas, "Id", "Name");
+                return View(contentAdmin);
             }
-            ViewData["CinemaId"] = new SelectList(_context.Cinemas, "Id", "Id", contentAdmin.CinemaId);
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", contentAdmin.UserId);
-            return View(contentAdmin);
+
+            bool userExists = _context.Users.Any(u => u.Email == contentAdmin.User.Email || u.Username == contentAdmin.User.Username);
+
+            if (userExists)
+            {
+                ViewData["Error"] = "Username or email already exists.";
+                ViewData["CinemaId"] = new SelectList(_context.Cinemas, "Id", "Name");
+                return View(contentAdmin);
+            }
+
+            contentAdmin.User.RoleId = 3;
+            contentAdmin.User.Password = BCrypt.Net.BCrypt.HashPassword(contentAdmin.User.Password, workFactor: 10);
+            _context.Add(contentAdmin);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index", "AppAdmins");
         }
 
-        // GET: ContentAdmins/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        // GET: ContentAdmins/Delete/{ContentAdminId}
+        public async Task<IActionResult> Delete(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            var contentAdmin = await _context.ContentAdmins.Include(c => c.User).FirstOrDefaultAsync(c => c.Id == id);
 
-            var contentAdmin = await _context.ContentAdmins.FindAsync(id);
-            if (contentAdmin == null)
-            {
-                return NotFound();
-            }
-            ViewData["CinemaId"] = new SelectList(_context.Cinemas, "Id", "Id", contentAdmin.CinemaId);
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", contentAdmin.UserId);
-            return View(contentAdmin);
-        }
-
-        // POST: ContentAdmins/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,UserId,CinemaId")] ContentAdmin contentAdmin)
-        {
-            if (id != contentAdmin.Id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(contentAdmin);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ContentAdminExists(contentAdmin.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["CinemaId"] = new SelectList(_context.Cinemas, "Id", "Id", contentAdmin.CinemaId);
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", contentAdmin.UserId);
-            return View(contentAdmin);
-        }
-
-        // GET: ContentAdmins/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var contentAdmin = await _context.ContentAdmins
-                .Include(c => c.Cinema)
-                .Include(c => c.User)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (contentAdmin == null)
-            {
-                return NotFound();
-            }
-
-            return View(contentAdmin);
-        }
-
-        // POST: ContentAdmins/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var contentAdmin = await _context.ContentAdmins.FindAsync(id);
             if (contentAdmin != null)
             {
+                contentAdmin.User.ContentAdmins.Remove(contentAdmin);
+                _context.Users.Remove(contentAdmin.User);
                 _context.ContentAdmins.Remove(contentAdmin);
             }
 
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
-        private bool ContentAdminExists(int id)
-        {
-            return _context.ContentAdmins.Any(e => e.Id == id);
+            return RedirectToAction("Index", "AppAdmins");
         }
     }
 }
