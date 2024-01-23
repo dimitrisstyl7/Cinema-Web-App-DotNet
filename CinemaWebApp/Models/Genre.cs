@@ -1,11 +1,13 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
 namespace CinemaWebApp.Models;
 
 [Table("Genre")]
-[Index("Name", Name = "UQ__Genre__72E12F1BA01AFDC6", IsUnique = true)]
+[Index("Name", Name = "UQ__Genre__72E12F1BFCA9FA5B", IsUnique = true)]
 public partial class Genre
 {
     [Key]
