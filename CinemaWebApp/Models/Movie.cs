@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
@@ -6,16 +7,13 @@ using Microsoft.EntityFrameworkCore;
 namespace CinemaWebApp.Models;
 
 [Table("Movie")]
+[Index("Title", "ReleaseYear", Name = "UQ__Movie__E0B774E4288D6FEE", IsUnique = true)]
 public partial class Movie
 {
     [Key]
     [Column("id")]
     public int Id { get; set; }
 
-    [Column("content_admin_id")]
-    public int ContentAdminId { get; set; }
-
-    [Display(Name = "Genre")]
     [Column("genre_id")]
     public int GenreId { get; set; }
 
@@ -24,7 +22,6 @@ public partial class Movie
     [Unicode(false)]
     public string Title { get; set; } = null!;
 
-    [Display(Name = "Duration (in minutes)")]
     [Column("duration")]
     public int Duration { get; set; }
 
@@ -36,22 +33,16 @@ public partial class Movie
     [Unicode(false)]
     public string Description { get; set; } = null!;
 
-    [Display(Name = "Release Year")]
-    [Column("release_date")]
+    [Column("release_year")]
     [StringLength(4)]
     [Unicode(false)]
-    public string ReleaseDate { get; set; } = null!;
+    public string ReleaseYear { get; set; } = null!;
 
     [Column("director")]
     [StringLength(50)]
     [Unicode(false)]
     public string Director { get; set; } = null!;
 
-    [ForeignKey("ContentAdminId")]
-    [InverseProperty("Movies")]
-    public virtual ContentAdmin ContentAdmin { get; set; } = null!;
-
-    [Display(Name = "Genre")]
     [ForeignKey("GenreId")]
     [InverseProperty("Movies")]
     public virtual Genre Genre { get; set; } = null!;
