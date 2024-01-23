@@ -29,7 +29,7 @@ namespace CinemaWebApp.Controllers
         public async Task<IActionResult> Create([Bind("User, CinemaId")] ContentAdmin contentAdmin)
         {
             ModelState.Remove(nameof(ContentAdmin.Cinema));
-            ModelState.Remove(nameof(ContentAdmin.User) + "." + nameof(ContentAdmin.User.Role));
+            ModelState.Remove(nameof(ContentAdmin.User) + "." + nameof(ContentAdmin.User.Role)); // User.Role
 
             if (!ModelState.IsValid)
             {
@@ -50,7 +50,7 @@ namespace CinemaWebApp.Controllers
             contentAdmin.User.Password = BCrypt.Net.BCrypt.HashPassword(contentAdmin.User.Password, workFactor: 10);
             _context.Add(contentAdmin);
             await _context.SaveChangesAsync();
-            return RedirectToAction("Index", "AppAdmins", new { id = ViewData["AppAdminId"] });
+            return RedirectToAction("Index", "AppAdmins");
         }
 
         // GET: ContentAdmins/Delete/{ContentAdminId}
