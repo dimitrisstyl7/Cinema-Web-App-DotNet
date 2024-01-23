@@ -1,4 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CinemaWebApp.Models;
@@ -12,6 +16,23 @@ namespace CinemaWebApp.Controllers
         public ContentAdminsController(CinemaAppDBContext context)
         {
             _context = context;
+        }
+
+
+        // GET: ContentAdmins/Id
+        public async Task<IActionResult> Index(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            
+            var movies = await _context.Movies
+                .Include(m => m.Genre)
+                .Where(m => m.ContentAdminId == id)
+                .ToListAsync();
+            ViewData["ContentAdminId"] = id;
+            return View(movies);
         }
 
         // GET: ContentAdmins/Create
