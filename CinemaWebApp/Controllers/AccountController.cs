@@ -63,7 +63,7 @@ namespace CinemaWebApp.Controllers
                         .Where(aa => aa.UserId == db_user.Id)
                         .Select(aa => aa.Id)
                         .FirstOrDefaultAsync();
-                    return RedirectToAction("Index", "AppAdmins", new { id = appAdminId });
+                    return RedirectToAction("Index", "AppAdmins");
                 case "content_admin":
                     int contentAdminId = await _context.ContentAdmins
                         .Where(ca => ca.UserId == db_user.Id)
