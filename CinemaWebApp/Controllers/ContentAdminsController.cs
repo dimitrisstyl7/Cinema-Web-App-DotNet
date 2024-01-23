@@ -14,11 +14,10 @@ namespace CinemaWebApp.Controllers
             _context = context;
         }
 
-        // GET: ContentAdmins/Create/{AppAdminId}
-        public IActionResult Create(int id)
+        // GET: ContentAdmins/Create
+        public IActionResult Create()
         {
             ViewData["CinemaId"] = new SelectList(_context.Cinemas, "Id", "Name");
-            ViewData["AppAdminId"] = id;
             return View();
         }
 
