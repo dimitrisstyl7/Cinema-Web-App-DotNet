@@ -114,6 +114,8 @@ namespace CinemaWebApp.Controllers
             {
                 try
                 {
+                    var remNumOfseats = _context.ScreeningRooms.Where(s => s.Id == screening.ScreeningRoomId).Select(s => s.TotalNoOfSeats).FirstOrDefault();
+                    screening.RemainingNoOfSeats = remNumOfseats;
                     _context.Update(screening);
                     await _context.SaveChangesAsync();
                 }
