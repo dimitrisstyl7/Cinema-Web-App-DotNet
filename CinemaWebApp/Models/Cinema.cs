@@ -1,12 +1,14 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
 namespace CinemaWebApp.Models;
 
 [Table("Cinema")]
-[Index("Email", Name = "UQ__Cinema__AB6E6164CE3A75E4", IsUnique = true)]
-[Index("Name", "Address", "City", "ZipCode", Name = "UQ__Cinema__F8DCF1A95BA0DAC1", IsUnique = true)]
+[Index("Email", Name = "UQ__Cinema__AB6E6164EF9A9271", IsUnique = true)]
+[Index("Name", "Address", "City", "ZipCode", Name = "UQ__Cinema__F8DCF1A97BB51F66", IsUnique = true)]
 public partial class Cinema
 {
     [Key]
