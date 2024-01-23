@@ -15,6 +15,7 @@ public partial class Movie
     [Column("content_admin_id")]
     public int ContentAdminId { get; set; }
 
+    [Display(Name = "Genre")]
     [Column("genre_id")]
     public int GenreId { get; set; }
 

@@ -16,7 +16,7 @@ public partial class ScreeningRoom
     [Column("cinema_id")]
     public int CinemaId { get; set; }
 
-    [Display(Name = "Screening Room Name")]
+    [Display(Name = "Screening Room")]
     [Column("name")]
     [StringLength(20)]
     [Unicode(false)]

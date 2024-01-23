@@ -36,7 +36,7 @@ public partial class Screening
     [InverseProperty("Screening")]
     public virtual ICollection<Reservation> Reservations { get; set; } = new List<Reservation>();
 
-    [Display(Name = "Screening Room Name")]
+    [Display(Name = "Screening Room")]
     [ForeignKey("ScreeningRoomId")]
     [InverseProperty("Screenings")]
     public virtual ScreeningRoom ScreeningRoom { get; set; } = null!;
