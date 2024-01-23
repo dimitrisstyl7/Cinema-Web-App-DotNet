@@ -13,8 +13,8 @@ namespace CinemaWebApp.Controllers
             _context = context;
         }
 
-        // GET: AppAdmins/Index/{AppAdminId}
-        public async Task<IActionResult> Index(int? id)
+        // GET: AppAdmins/Index
+        public async Task<IActionResult> Index()
         {
             var contentAdmins = await _context.ContentAdmins
                 .Include(admin => admin.User)
@@ -26,7 +26,6 @@ namespace CinemaWebApp.Controllers
                 ViewData["Message"] = "No content admins found.";
             }
 
-            ViewData["AppAdminId"] = id;
             return View(contentAdmins);
         }
     }
