@@ -20,14 +20,17 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item" @(ShouldShow() ? "" : "hidden")>
+                        <li class="nav-item" @(IsNotAuthenticated() ? "" : "hidden")>
                             <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="SignIn">Sign in</a>
                         </li>
-                        <li class="nav-item" @(ShouldShow() ? "" : "hidden")>
+                        <li class="nav-item" @(IsNotAuthenticated() ? "" : "hidden")>
                             <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="SignUp">Sign up</a>
                         </li>
-                        <li class="nav-item" @(!ShouldShow() ? "" : "hidden")>
+                        <li class="nav-item" @(!IsNotAuthenticated() ? "" : "hidden")>
                             <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="SignOut">Sign out</a>
+                        </li>
+                        <li class="nav-item" @(IsContentAdmin() ? "" : "hidden")>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Screenings" asp-action="Index">Screenings</a>
                         </li>
                     </ul>
                 </div>
@@ -62,9 +65,14 @@
 </html>
 
 @functions {
-    private bool ShouldShow()
+    private bool IsNotAuthenticated()
     {
         var currentPath = Context.Request.Path.ToString();
-            return currentPath.Equals("/") || currentPath.StartsWith("/Home") || currentPath.StartsWith("/Account");
+        return currentPath.Equals("/") || currentPath.StartsWith("/Home") || currentPath.StartsWith("/Account");
+    }
+    private bool IsContentAdmin()
+    {
+        var currentPath = Context.Request.Path.ToString();
+        return currentPath.StartsWith("/ContentAdmins");
     }
 };

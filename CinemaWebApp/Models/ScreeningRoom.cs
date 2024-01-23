@@ -12,17 +12,21 @@ public partial class ScreeningRoom
     [Column("id")]
     public int Id { get; set; }
 
+    [Display(Name = "Cinema Name")]
     [Column("cinema_id")]
     public int CinemaId { get; set; }
 
+    [Display(Name = "Screening Room")]
     [Column("name")]
     [StringLength(20)]
     [Unicode(false)]
     public string Name { get; set; } = null!;
 
+    [Display(Name = "Total Number of Seats")]
     [Column("total_no_of_seats")]
     public int TotalNoOfSeats { get; set; }
 
+    [Display(Name = "3D")]
     [Column("3D")]
     public bool _3d { get; set; }
 

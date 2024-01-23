@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,6 +15,7 @@ public partial class Movie
     [Column("content_admin_id")]
     public int ContentAdminId { get; set; }
 
+    [Display(Name = "Genre")]
     [Column("genre_id")]
     public int GenreId { get; set; }
 
@@ -22,6 +24,7 @@ public partial class Movie
     [Unicode(false)]
     public string Title { get; set; } = null!;
 
+    [Display(Name = "Duration (in minutes)")]
     [Column("duration")]
     public int Duration { get; set; }
 
@@ -33,6 +36,7 @@ public partial class Movie
     [Unicode(false)]
     public string Description { get; set; } = null!;
 
+    [Display(Name = "Release Year")]
     [Column("release_date")]
     [StringLength(4)]
     [Unicode(false)]
@@ -47,6 +51,7 @@ public partial class Movie
     [InverseProperty("Movies")]
     public virtual ContentAdmin ContentAdmin { get; set; } = null!;
 
+    [Display(Name = "Genre")]
     [ForeignKey("GenreId")]
     [InverseProperty("Movies")]
     public virtual Genre Genre { get; set; } = null!;
