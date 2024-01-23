@@ -1,11 +1,13 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
 namespace CinemaWebApp.Models;
 
 [Table("Reservation")]
-[Index("CustomerId", "ScreeningId", Name = "UQ__Reservat__E912BFE8BD95B436", IsUnique = true)]
+[Index("CustomerId", "ScreeningId", Name = "UQ__Reservat__E912BFE88F4C5DCA", IsUnique = true)]
 public partial class Reservation
 {
     [Key]
