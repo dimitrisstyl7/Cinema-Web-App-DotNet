@@ -12,7 +12,7 @@ insert into [User] (role_id, username, email, first_name, last_name, password)
 values (1, 'customer1', 'customer1@email.com', 'Customer', 'One',
         '$2a$10$elKRD7GTtyImpjd155Q9eOXJxJha4mVxe0k4zyxmPehAU6SpZ6dBa');
 insert into [User] (role_id, username, email, first_name, last_name, password)
-values (2, 'appAdmin', 'appAdmin1@email.com', 'App', 'Admin',
+values (2, 'appAdmin', 'appAdmin@email.com', 'App', 'Admin',
         '$2a$10$RGZsOH9pX4TcPSs0OMpMTuLMxWvKKX1HB0FEtAnR5aXjDYTOg7wSa');
 insert into [User] (role_id, username, email, first_name, last_name, password)
 values (3, 'contentAdmin1', 'contentAdmin1@email.com', 'ContentAdmin', 'One',
@@ -59,10 +59,27 @@ values ('Action'),
        ('Documentary');
 
 -- insert movie into Movie table
-insert into Movie (content_admin_id, genre_id, title, duration, content, description, release_date, director)
-values (1, 1, 'Plane', 107, 'content',
+insert into Movie (genre_id, title, duration, content, description, release_year, director)
+values (1, 'Plane', 107, 'content',
         'Brodie Torrance saves his passengers from a lightning strike by making a risky landing on a war-torn island - only to find that surviving the landing was just the beginning. When most of the passengers are taken hostage by dangerous rebels, the only person Torrance can count on for help is Louis Gaspare, an accused murderer who was being transported by the FBI.',
         '2023', N'Jean-François Richet');
+		
+insert into Movie (genre_id, title, duration, content, description, release_year, director)
+values (4, 'Eternal Echoes', 130, 'content',
+        'In a tale of love and loss spanning multiple lifetimes, Emily and Alexander find themselves drawn to each other in every incarnation. As they navigate the challenges of each era, from ancient civilizations to a distant future, they discover that their connection is truly eternal. A heart-wrenching and poignant exploration of the enduring nature of true love.',
+        '2024', N'Greta Gerwig');
+
+insert into Movie (genre_id, title, duration, content, description, release_year, director)
+values (2, 'Shadows of Deceit', 115, 'content',
+        'Detective Sarah Lawson is on the trail of a cunning serial killer who leaves cryptic clues at crime scenes. As she unravels the mystery, she discovers a dark web of deception and betrayal that leads her to question her own colleagues. The tension builds as Sarah races against time to catch the elusive killer before they strike again.',
+        '2024', N'David Fincher');
+
+insert into Movie (genre_id, title, duration, content, description, release_year, director)
+values (5, 'Realm of Enchantment', 140, 'content',
+        'In a magical world threatened by an ancient evil, a reluctant hero must embark on a quest to find a legendary artifact that can save their realm. Along the way, they encounter mythical creatures, forge alliances, and confront their own fears. A visually stunning and epic journey into a realm where the line between reality and fantasy blurs.',
+        '2025', N'Peter Jackson');
+
+
 
 -- insert screening rooms into ScreeningRoom table
 insert into ScreeningRoom (cinema_id, name, total_no_of_seats, [3D])

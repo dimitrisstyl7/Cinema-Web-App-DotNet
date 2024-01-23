@@ -59,8 +59,7 @@ create table Cinema
     email                 varchar(50) not null unique,
     -- each cinema has unique email
     no_of_screening_rooms int         not null,
-    unique (name, address, city, zip_code)
-    -- avoid duplicate cinemas
+    unique (name, address, city, zip_code) -- avoid duplicate cinemas
 );
 
 -- create table ContentAdmin
@@ -86,16 +85,15 @@ create table Genre
 create table Movie
 (
     id               int primary key identity (1,1),
-    content_admin_id int          not null,
     genre_id         int          not null,
     title            varchar(50)  not null,
     duration         int          not null, -- in minutes
     content          varchar(max) not null,
     description      varchar(max) not null,
-    release_date     varchar(4)   not null,
+    release_year     varchar(4)   not null,
     director         varchar(50)  not null,
     foreign key (genre_id) references Genre (id),
-    foreign key (content_admin_id) references ContentAdmin (id)
+	unique (title, release_year) -- avoid duplicate movies
 );
 
 -- create table ScreeningRoom
