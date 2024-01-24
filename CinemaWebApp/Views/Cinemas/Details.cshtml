@@ -10,16 +10,50 @@
 {
     <br />
     <h3 class="text-success">@group.Key.Title</h3>
+
+    <table class="table table-striped">
+
+        <thead>
+            <tr>
+                <td>
+                    @Html.DisplayNameFor(modelItem => group.Key.Content)
+                </td>
+                <td>
+                    @Html.DisplayNameFor(modelItem => group.Key.Description)
+                </td>
+                <td>
+                    @Html.DisplayNameFor(modelItem => group.Key.Duration)
+                </td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => group.Key.Content)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => group.Key.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => group.Key.Duration)
+                </td>       
+            </tr>
+        </tbody>
+    </table>
+
     <table class="table table-striped">
         <thead>
             <tr>
                 <th>
-                    @Html.DisplayNameFor(modelItem => group.First().Movie.Description)
+                    @Html.DisplayNameFor(modelItem => group.First().ScreeningRoom.Name)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(modelItem => group.First().Movie.Duration)
+                    @Html.DisplayNameFor(modelItem => group.First().StartTime)
                 </th>
-                <th>...........</th>
+                <th>
+                    @Html.DisplayNameFor(modelItem => group.First().RemainingNoOfSeats)
+                </th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -27,16 +61,16 @@
             {
                 <tr>
                     <td class="col-4">
-                        @Html.DisplayFor(modelItem => item.StartTime)
+                        @Html.DisplayFor(modelItem => item.ScreeningRoom.Name)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.ScreeningRoom.Name)
+                        @Html.DisplayFor(modelItem => item.StartTime)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.RemainingNoOfSeats)
                     </td>
                     <td>
-                        <a asp-action="Delete" asp-controller="ContentAdmins" asp-route-id="@item.Id">Delete</a>
+                        <a asp-action="Delete" asp-controller="ContentAdmins" asp-route-id="@item.Id">Book Tickets</a>
                     </td>
                 </tr>
             }
