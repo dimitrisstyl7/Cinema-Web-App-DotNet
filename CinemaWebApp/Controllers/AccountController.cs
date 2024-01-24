@@ -100,6 +100,12 @@ namespace CinemaWebApp.Controllers
             user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password, workFactor: 10);
             _context.Add(user);
             await _context.SaveChangesAsync();
+            User? newUser = await _context.Users.FirstOrDefaultAsync(u => u.Email == user.Email);
+            if (newUser != null)
+            {
+                _context.Add(new Customer { UserId = newUser.Id });
+                await _context.SaveChangesAsync();
+            }
 
             return RedirectToAction(nameof(SignIn));
         }
