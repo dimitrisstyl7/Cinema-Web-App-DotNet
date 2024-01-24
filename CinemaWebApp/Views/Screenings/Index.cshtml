@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<CinemaWebApp.Models.Screening>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Screenings";
 }
 
 <h1>Screenings</h1>
@@ -22,9 +22,14 @@
                 @Html.DisplayNameFor(model => model.Movie)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.Movie.Duration)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.ScreeningRoom)
             </th>
-            <th></th>
+            <th>
+                Actions
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -38,6 +43,9 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Movie.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Movie.Duration) minutes
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.ScreeningRoom.Name)
