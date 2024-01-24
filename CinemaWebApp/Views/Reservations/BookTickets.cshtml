@@ -8,42 +8,42 @@
 
 @if (ViewData["ReservationExists"] != null && (bool)ViewData["ReservationExists"])
 {
-    <p>You have already booked:</p>
+    <p>You have already booked.</p>
     <a asp-action="Details" asp-controller="Reservations" asp-route-id="@ViewData["ReservationId"]">View Reservation Details</a>
 }
 else
 {
-    <h4>Customer Information</h4>
+    <h4 class="mt-5">Customer Information</h4>
     <hr />
     <div>
         <dl class="dl-horizontal">
             <dt>
-                @Html.DisplayNameFor(model => model.Customer.User.FirstName)
+                @Html.DisplayNameFor(model => model.Customer.User.FullName)
             </dt>
             <dd>
-                @ViewBag.Customer.User.FirstName
+                @ViewBag.Customer.User.FullName
             </dd>
         </dl>
     </div>
 
-    <h4>Screening Information</h4>
+    <h4 class ="mt-4">Screening Information</h4>
     <hr />
     <div>
         <dl class="dl-horizontal">
             <dt>
-                Movie Title
+                @Html.DisplayNameFor(model => model.Screening.Movie)
             </dt>
             <dd>
                 @ViewBag.Screening.Movie.Title
             </dd>
             <dt>
-                Screening Room
+                @Html.DisplayNameFor(model => model.Screening.ScreeningRoom)
             </dt>
             <dd>
                 @ViewBag.Screening.ScreeningRoom.Name
             </dd>
             <dt>
-                Screening Date
+                @Html.DisplayNameFor(model => model.Screening.StartTime)
             </dt>
             <dd>
                 @ViewBag.Screening.StartTime
@@ -51,7 +51,7 @@ else
         </dl>
     </div>
 
-    <h4>Reservation</h4>
+    <h4 class ="mt-4">Reservation</h4>
     <hr />
     <div class="row">
         <div class="col-md-4">
@@ -61,11 +61,11 @@ else
                 <input type="hidden" asp-for="ScreeningId" value="@ViewBag.Screening.Id" />
 
                 <div class="form-group">
-                    <label asp-for="NoOfBookedSeats" class="control-label"></label>
+                    <b><label asp-for="NoOfBookedSeats" class="control-label"></label></b>
                     <input asp-for="NoOfBookedSeats" class="form-control" />
                     <span asp-validation-for="NoOfBookedSeats" class="text-danger"></span>
                 </div>
-                <div class="form-group">
+                <div class="form-group mt-3 mb-2">
                     <input type="submit" value="Create" class="btn btn-primary" />
                 </div>
             </form>
