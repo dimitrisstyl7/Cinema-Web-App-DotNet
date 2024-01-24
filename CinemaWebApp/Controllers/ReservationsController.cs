@@ -105,13 +105,15 @@ namespace CinemaWebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,CustomerId,ScreeningId,NoOfBookedSeats")] Reservation reservation)
         {
-
-/*            if (ModelState.IsValid) -->To be implemented
-            {*/
+            ModelState.Remove("Customer");
+            ModelState.Remove("Screening");
+            if (ModelState.IsValid)
+            {
                 _context.Add(reservation);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
-            /*}*/
+            }
+            return View(reservation);
         }
 
         // GET: Reservations/Edit/5
