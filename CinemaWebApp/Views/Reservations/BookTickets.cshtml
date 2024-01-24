@@ -21,7 +21,7 @@ else
                 @Html.DisplayNameFor(model => model.Customer.User.FirstName)
             </dt>
             <dd>
-                @Html.DisplayFor(model => model.Customer.User.FirstName)
+                @ViewBag.Customer.User.FirstName
             </dd>
         </dl>
     </div>
@@ -31,10 +31,22 @@ else
     <div>
         <dl class="dl-horizontal">
             <dt>
-                @Html.DisplayNameFor(model => model.Screening.Movie.Title)
+                Movie Title
             </dt>
             <dd>
-                @Html.DisplayFor(model => model.Screening.Movie.Title)
+                @ViewBag.Screening.Movie.Title
+            </dd>
+            <dt>
+                Screening Room
+            </dt>
+            <dd>
+                @ViewBag.Screening.ScreeningRoom.Name
+            </dd>
+            <dt>
+                Screening Date
+            </dt>
+            <dd>
+                @ViewBag.Screening.StartTime
             </dd>
         </dl>
     </div>
