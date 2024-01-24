@@ -15,9 +15,9 @@ namespace CinemaWebApp.Controllers
         }
 
         // GET: Reservations
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int id)
         {
-            var cinemaAppDBContext = _context.Reservations.Include(r => r.Customer).Include(r => r.Screening);
+            var cinemaAppDBContext = _context.Reservations.Include(r => r.Customer).Where(r => id == r.CustomerId).Include(r => r.Screening).Include(r => r.Screening.ScreeningRoom).Include(r => r.Screening.Movie).Include(r => r.Customer.User);
             return View(await cinemaAppDBContext.ToListAsync());
         }
 
@@ -52,19 +52,13 @@ namespace CinemaWebApp.Controllers
         }
 
         // GET: Reservations/Create
-        public IActionResult Create()
+        public IActionResult Create(int id)
         {
-            ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "Id");
-            ViewData["ScreeningId"] = new SelectList(_context.Screenings, "Id", "Id");
-            return View();
-        }
+            int customerId = 2;
 
-        // GET: Reservations/BookTickets
-        public IActionResult BookTickets(int screeningId, int customerId = 1)
-        {
             // Check if a reservation already exists for the given customer and screening
             var existingReservation = _context.Reservations
-                .FirstOrDefault(r => r.CustomerId == customerId && r.ScreeningId == screeningId);
+                .FirstOrDefault(r => r.CustomerId == customerId && r.ScreeningId == id);
 
             if (existingReservation != null)
             {
@@ -82,7 +76,7 @@ namespace CinemaWebApp.Controllers
             var screening = _context.Screenings
                 .Include(s => s.Movie)
                 .Include(s => s.ScreeningRoom)
-                .FirstOrDefault(s => s.Id == screeningId);
+                .FirstOrDefault(s => s.Id == id);
 
             if (customer == null || screening == null)
             {
@@ -97,133 +91,72 @@ namespace CinemaWebApp.Controllers
             return View();
         }
 
-
         // POST: Reservations/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,CustomerId,ScreeningId,NoOfBookedSeats")] Reservation reservation)
+        public async Task<IActionResult> Create([Bind("CustomerId,ScreeningId,NoOfBookedSeats")] Reservation reservation)
         {
             ModelState.Remove("Customer");
             ModelState.Remove("Screening");
 
-            if (ModelState.IsValid)
-            {
-                // Search for the screening with the specified ScreeningId
-                var screening = await _context.Screenings.FindAsync(reservation.ScreeningId);
+            // Search for the screening with the specified ScreeningId
+            var screening_db = await _context.Screenings.FindAsync(reservation.ScreeningId);
 
-                if (screening != null)
+            if (screening_db == null)
+            {
+                return NotFound();
+            }
+
+            int remainingNoOfSeats = screening_db.RemainingNoOfSeats;
+
+            if (reservation.NoOfBookedSeats <= 0)
+            {
+                ModelState.AddModelError("NoOfBookedSeats", "Please enter a positive number");
+            }
+
+            if (reservation.NoOfBookedSeats > remainingNoOfSeats)
+            {
+                ModelState.AddModelError("NoOfBookedSeats", "Not enough remaining seats");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                var customer = _context.Customers
+               .Include(c => c.User) // Include related user information
+               .FirstOrDefault(c => c.Id == reservation.CustomerId);
+
+                var screening = _context.Screenings
+                .Include(s => s.Movie)
+                .Include(s => s.ScreeningRoom)
+                .FirstOrDefault(s => s.Id == reservation.ScreeningId);
+
+                if (customer == null || screening == null)
                 {
-                    // Check if there are enough remaining seats
-                    if (reservation.NoOfBookedSeats <= screening.RemainingNoOfSeats)
-                    {
-                        // Update the remaining number of seats in the screening
-                        screening.RemainingNoOfSeats -= reservation.NoOfBookedSeats;
-                        _context.Update(screening);
-
-                        // Add the reservation to the context
-                        _context.Add(reservation);
-
-                        // Save changes to the database
-                        await _context.SaveChangesAsync();
-
-                        // Redirect to the Index action
-                        return RedirectToAction(nameof(Index));
-                    }
+                    // Handle case where customer or screening is not found
+                    return NotFound();
                 }
-            }
-            return View(reservation);
-        }
 
-        // GET: Reservations/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
+                // Pass the retrieved data to the view
+                ViewData["Customer"] = customer;
+                ViewData["Screening"] = screening;
+
+                return View(reservation);
             }
 
-            var reservation = await _context.Reservations.FindAsync(id);
-            if (reservation == null)
-            {
-                return NotFound();
-            }
-            ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "Id", reservation.CustomerId);
-            ViewData["ScreeningId"] = new SelectList(_context.Screenings, "Id", "Id", reservation.ScreeningId);
-            return View(reservation);
-        }
+            // Update the remaining number of seats in the screening
+            screening_db.RemainingNoOfSeats -= reservation.NoOfBookedSeats;
+            _context.Update(screening_db);
 
-        // POST: Reservations/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,CustomerId,ScreeningId,NoOfBookedSeats")] Reservation reservation)
-        {
-            if (id != reservation.Id)
-            {
-                return NotFound();
-            }
+            // Add the reservation to the context
+            _context.Add(reservation);
 
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(reservation);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ReservationExists(reservation.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "Id", reservation.CustomerId);
-            ViewData["ScreeningId"] = new SelectList(_context.Screenings, "Id", "Id", reservation.ScreeningId);
-            return View(reservation);
-        }
-
-        // GET: Reservations/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var reservation = await _context.Reservations
-                .Include(r => r.Customer)
-                .Include(r => r.Screening)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (reservation == null)
-            {
-                return NotFound();
-            }
-
-            return View(reservation);
-        }
-
-        // POST: Reservations/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var reservation = await _context.Reservations.FindAsync(id);
-            if (reservation != null)
-            {
-                _context.Reservations.Remove(reservation);
-            }
-
+            // Save changes to the database
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+
+            // Redirect to the Index action
+            return RedirectToAction(nameof(Index), new { id = reservation.CustomerId });
         }
 
         private bool ReservationExists(int id)
