@@ -107,11 +107,31 @@ namespace CinemaWebApp.Controllers
         {
             ModelState.Remove("Customer");
             ModelState.Remove("Screening");
+
             if (ModelState.IsValid)
             {
-                _context.Add(reservation);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                // Search for the screening with the specified ScreeningId
+                var screening = await _context.Screenings.FindAsync(reservation.ScreeningId);
+
+                if (screening != null)
+                {
+                    // Check if there are enough remaining seats
+                    if (reservation.NoOfBookedSeats <= screening.RemainingNoOfSeats)
+                    {
+                        // Update the remaining number of seats in the screening
+                        screening.RemainingNoOfSeats -= reservation.NoOfBookedSeats;
+                        _context.Update(screening);
+
+                        // Add the reservation to the context
+                        _context.Add(reservation);
+
+                        // Save changes to the database
+                        await _context.SaveChangesAsync();
+
+                        // Redirect to the Index action
+                        return RedirectToAction(nameof(Index));
+                    }
+                }
             }
             return View(reservation);
         }
