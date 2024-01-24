@@ -8,37 +8,31 @@
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
-            First Name
+            @Html.DisplayNameFor(model => model.Customer.User.FirstName)
         </dt>
         <dd class = "col-sm-10">
             @ViewBag.Customer.User.FirstName
         </dd>
         <dt class = "col-sm-2">
-                    Last Name
+            @Html.DisplayNameFor(model => model.Customer.User.LastName)
         </dt>
         <dd class = "col-sm-10">
             @ViewBag.Customer.User.LastName
         </dd>
         <dt class="col-sm-2">
-            Screening
-        </dt>
-        <dd class="col-sm-10">
-            @ViewBag.Screening.Id
-        </dd>
-        <dt class="col-sm-2">
-            Movie
-        </dt>
-        <dd class="col-sm-10">
-            @ViewBag.Screening.Movie.Title
-        </dd>
-        <dt class="col-sm-2">
-            Room
+            @Html.DisplayNameFor(model => model.Screening)
         </dt>
         <dd class="col-sm-10">
             @ViewBag.Screening.ScreeningRoom.Name
         </dd>
         <dt class="col-sm-2">
-            Date and Time
+            @Html.DisplayNameFor(model => model.Screening.Movie)
+        </dt>
+        <dd class="col-sm-10">
+            @ViewBag.Screening.Movie.Title
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Screening.StartTime)
         </dt>
         <dd class="col-sm-10">
             @ViewBag.Screening.StartTime
