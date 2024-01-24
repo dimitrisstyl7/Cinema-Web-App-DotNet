@@ -76,7 +76,7 @@
     private bool IsContentAdminAndMoviesController()
     {
         var currentPath = Context.Request.Path.ToString();
-        return currentPath.StartsWith("/ContentAdmins") || currentPath.StartsWith("/Movies");
+            return !currentPath.Equals("/ContentAdmins/Create") && (currentPath.StartsWith("/ContentAdmins") || currentPath.StartsWith("/Movies"));
     }
     private bool IsContentAdminAndScreeningsController()
     {
