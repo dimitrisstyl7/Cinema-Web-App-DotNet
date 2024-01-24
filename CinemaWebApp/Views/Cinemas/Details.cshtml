@@ -72,7 +72,7 @@
                     @if(item.RemainingNoOfSeats > 0)
                     {
                         <td class="col-1">
-                            <a asp-action="BookTickets" asp-controller="Reservations" asp-route-screeningId="@item.Id">Book Tickets</a>
+                            <a asp-action="Create" asp-controller="Reservations" asp-route-id="@item.Id">Book Tickets</a>
                         </td>
                     }
                     else
