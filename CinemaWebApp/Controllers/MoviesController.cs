@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CinemaWebApp.Models;
+using System.Text.RegularExpressions;
 
 namespace CinemaWebApp.Controllers
 {
-    public class MoviesController : Controller
+    public partial class MoviesController : Controller
     {
         private readonly CinemaAppDBContext _context;
 
@@ -53,15 +50,31 @@ namespace CinemaWebApp.Controllers
         public async Task<IActionResult> Create([Bind("GenreId,Title,Duration,Content,Description,ReleaseYear,Director")] Movie movie)
         {
             ModelState.Remove(nameof(movie.Genre));
+            string releaseYear = movie.ReleaseYear;
 
-            if (ModelState.IsValid)
+            if (!ReleaseYearRegex().IsMatch(releaseYear))
             {
-                _context.Add(movie);
-                await _context.SaveChangesAsync();
-                return RedirectToAction("Index","ContentAdmins");
+                ModelState.AddModelError("ReleaseYear", "Please enter a valid year.");
             }
-            ViewData["GenreId"] = new SelectList(_context.Genres, "Id", "Name", movie.GenreId);
-            return View(movie);
+
+            if (!ModelState.IsValid)
+            {
+                ViewData["GenreId"] = new SelectList(_context.Genres, "Id", "Name", movie.GenreId);
+                return View(movie);
+            }
+
+            bool movieExists = _context.Movies.Any(m => m.Title == movie.Title && m.ReleaseYear == movie.ReleaseYear);
+
+            if (movieExists)
+            {
+                ViewData["GenreId"] = new SelectList(_context.Genres, "Id", "Name", movie.GenreId);
+                ViewData["Error"] = "Movie already exists.";
+                return View(movie);
+            }
+
+            _context.Add(movie);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index", "ContentAdmins");
         }
 
         // GET: Movies/Edit/5
@@ -95,28 +108,45 @@ namespace CinemaWebApp.Controllers
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            string releaseYear = movie.ReleaseYear;
+
+            if (!ReleaseYearRegex().IsMatch(releaseYear))
             {
-                try
-                {
-                    _context.Update(movie);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!MovieExists(movie.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction("Index", "ContentAdmins");
+                ModelState.AddModelError("ReleaseYear", "Please enter a valid year.");
             }
-            ViewData["GenreId"] = new SelectList(_context.Genres, "Id", "Name", movie.GenreId);
-            return View(movie);
+
+            if (!ModelState.IsValid)
+            {
+                ViewData["GenreId"] = new SelectList(_context.Genres, "Id", "Name", movie.GenreId);
+                return View(movie);
+            }
+
+            bool movieExists = _context.Movies.Any(m => m.Title == movie.Title && m.ReleaseYear == movie.ReleaseYear && m.Id != movie.Id);
+
+            if (movieExists)
+            {
+                ViewData["GenreId"] = new SelectList(_context.Genres, "Id", "Name", movie.GenreId);
+                ViewData["Error"] = "Movie already exists.";
+                return View(movie);
+            }
+
+            try
+            {
+                _context.Update(movie);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!MovieExists(movie.Id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            return RedirectToAction("Index", "ContentAdmins");
         }
 
         // GET: Movies/Delete/5
@@ -157,5 +187,8 @@ namespace CinemaWebApp.Controllers
         {
             return _context.Movies.Any(e => e.Id == id);
         }
+
+        [GeneratedRegex(@"(?:19|20)[0-9]{2}")]
+        private static partial Regex ReleaseYearRegex();
     }
 }
