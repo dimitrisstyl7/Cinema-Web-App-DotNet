@@ -56,7 +56,21 @@ namespace CinemaWebApp.Controllers
         // GET: Reservations/BookTickets
         public IActionResult BookTickets(int screeningId, int customerId = 1)
         {
-            // Retrieve customer, screening, and screening room data based on IDs
+            // Check if a reservation already exists for the given customer and screening
+            var existingReservation = _context.Reservations
+                .FirstOrDefault(r => r.CustomerId == customerId && r.ScreeningId == screeningId);
+
+            if (existingReservation != null)
+            {
+                // Reservation already exists, set ViewData to indicate that
+                ViewData["CustomerId"] = 0;
+                ViewData["ScreeningId"] = 0;
+                ViewData["ReservationExists"] = true;
+                ViewData["ReservationId"] = existingReservation.Id; // Pass the existing reservation ID if needed
+                return View();
+            }
+
+            // No existing reservation, proceed to retrieve customer, screening, and screening room data
             var customer = _context.Customers
                 .Include(c => c.User) // Include related user information
                 .FirstOrDefault(c => c.Id == customerId);
@@ -80,6 +94,7 @@ namespace CinemaWebApp.Controllers
 
             return View();
         }
+
 
         // POST: Reservations/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
