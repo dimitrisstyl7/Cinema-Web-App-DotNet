@@ -50,7 +50,7 @@ namespace CinemaWebApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ContentAdminId,GenreId,Title,Duration,Content,Description,ReleaseDate,Director")] Movie movie)
+        public async Task<IActionResult> Create([Bind("GenreId,Title,Duration,Content,Description,ReleaseYear,Director")] Movie movie)
         {
             ModelState.Remove(nameof(movie.Genre));
 
@@ -58,7 +58,7 @@ namespace CinemaWebApp.Controllers
             {
                 _context.Add(movie);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Index","ContentAdmins"/*, new { id = movie.ContentAdminId }*/);
+                return RedirectToAction("Index","ContentAdmins");
             }
             ViewData["GenreId"] = new SelectList(_context.Genres, "Id", "Name", movie.GenreId);
             return View(movie);
@@ -86,7 +86,7 @@ namespace CinemaWebApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,ContentAdminId,GenreId,Title,Duration,Content,Description,ReleaseDate,Director")] Movie movie)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,GenreId,Title,Duration,Content,Description,ReleaseYear,Director")] Movie movie)
         {
             ModelState.Remove(nameof(movie.Genre));
 
@@ -113,7 +113,7 @@ namespace CinemaWebApp.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction("Index", "ContentAdmins"/*, new { id = movie.ContentAdminId }*/);
+                return RedirectToAction("Index", "ContentAdmins");
             }
             ViewData["GenreId"] = new SelectList(_context.Genres, "Id", "Name", movie.GenreId);
             return View(movie);
@@ -150,7 +150,7 @@ namespace CinemaWebApp.Controllers
             }
 
             await _context.SaveChangesAsync();
-            return RedirectToAction("Index", "ContentAdmins"/*, new { id = movie.ContentAdminId }*/);
+            return RedirectToAction("Index", "ContentAdmins");
         }
 
         private bool MovieExists(int id)

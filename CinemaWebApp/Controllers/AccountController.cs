@@ -57,7 +57,7 @@ namespace CinemaWebApp.Controllers
                         .Where(c => c.UserId == db_user.Id)
                         .Select(c => c.Id)
                         .FirstOrDefaultAsync();
-                    return RedirectToAction("Index", "Customers", new { id = customerId });
+                    return RedirectToAction("Index", "Customers");
                 case "app_admin":
                     int appAdminId = await _context.AppAdmins
                         .Where(aa => aa.UserId == db_user.Id)
@@ -69,7 +69,7 @@ namespace CinemaWebApp.Controllers
                         .Where(ca => ca.UserId == db_user.Id)
                         .Select(ca => ca.Id)
                         .FirstOrDefaultAsync();
-                    return RedirectToAction("Index", "ContentAdmins", new { id = contentAdminId });
+                    return RedirectToAction("Index", "ContentAdmins");
                 default:
                     ViewData["Error"] = "Something went wrong, please try again.";
                     return View(user);

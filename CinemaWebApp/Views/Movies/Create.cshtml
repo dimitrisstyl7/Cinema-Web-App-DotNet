@@ -11,9 +11,6 @@
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <!--
-                <input type="hidden" asp-for="ContentAdminId" value="@ViewBag.ContentAdminId" />
-            -->
             <div class="form-group">
                 <label asp-for="GenreId" class="control-label"></label>
                 <select asp-for="GenreId" class ="form-control" asp-items="@ViewBag.GenreId"></select>
@@ -56,7 +53,7 @@
 </div>
 
 <div>
-    <a asp-controller="ContentAdmins" asp-action="Index" asp-route-id="@ViewBag.ContentAdminId">Back to List</a>
+    <a asp-controller="ContentAdmins" asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {

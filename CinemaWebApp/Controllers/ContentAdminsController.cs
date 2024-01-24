@@ -19,18 +19,12 @@ namespace CinemaWebApp.Controllers
         }
 
 
-        // GET: ContentAdmins/Id
-        public async Task<IActionResult> Index(int? id)
+        // GET: ContentAdmins
+        public async Task<IActionResult> Index()
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-            
             var movies = await _context.Movies
                 .Include(m => m.Genre)
                 .ToListAsync();
-            ViewData["ContentAdminId"] = id;
             return View(movies);
         }
 
