@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CinemaWebApp.Models;
@@ -35,12 +31,22 @@ namespace CinemaWebApp.Controllers
 
             var reservation = await _context.Reservations
                 .Include(r => r.Customer)
+                    .ThenInclude(c => c.User)  // Include related user information for the customer
                 .Include(r => r.Screening)
+                    .ThenInclude(s => s.Movie)  // Include related movie information for the screening
+                    .ThenInclude(m => m.Genre) // Include related genre information for the movie
+                .Include(r => r.Screening)
+                    .ThenInclude(s => s.ScreeningRoom)  // Include related screening room information for the screening
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (reservation == null)
             {
                 return NotFound();
             }
+
+            // Set ViewData for Customer and Screening
+            ViewData["Customer"] = reservation.Customer;
+            ViewData["Screening"] = reservation.Screening;
 
             return View(reservation);
         }

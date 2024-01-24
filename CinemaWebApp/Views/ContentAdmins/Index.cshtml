@@ -1,13 +1,13 @@
 ﻿@model IEnumerable<CinemaWebApp.Models.Movie>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Content Admin";
 }
 
-<h1>Content Admin Home</h1>
+<h1>Available Movies</h1>
 
 <p>
-    <a asp-controller="Movies" asp-action="Create">Add a new movie</a>
+    <h6><a asp-controller="Movies" asp-action="Create">Add a new movie</a></h6>
 </p>
 <table class="table" table-striped">
     <thead>
@@ -30,7 +30,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.Genre)
             </th>
-            <th></th>
+            <th>
+                Actions
+            </th>
         </tr>
     </thead>
     <tbody>
