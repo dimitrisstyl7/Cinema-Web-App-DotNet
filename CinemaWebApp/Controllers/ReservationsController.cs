@@ -63,8 +63,6 @@ namespace CinemaWebApp.Controllers
             if (existingReservation != null)
             {
                 // Reservation already exists, set ViewData to indicate that
-                ViewData["CustomerId"] = 0;
-                ViewData["ScreeningId"] = 0;
                 ViewData["ReservationExists"] = true;
                 ViewData["ReservationId"] = existingReservation.Id; // Pass the existing reservation ID if needed
                 return View();
@@ -87,8 +85,6 @@ namespace CinemaWebApp.Controllers
             }
 
             // Pass the retrieved data to the view
-            ViewData["CustomerId"] = customer.Id;
-            ViewData["ScreeningId"] = screening.Id;
             ViewData["Customer"] = customer;
             ViewData["Screening"] = screening;
 
