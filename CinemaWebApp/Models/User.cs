@@ -28,11 +28,13 @@ public partial class User
     [Unicode(false)]
     public string Email { get; set; } = null!;
 
+    [Display(Name = "First Name")]
     [Column("first_name")]
     [StringLength(30)]
     [Unicode(false)]
     public string FirstName { get; set; } = null!;
 
+    [Display(Name = "Last Name")]
     [Column("last_name")]
     [StringLength(30)]
     [Unicode(false)]

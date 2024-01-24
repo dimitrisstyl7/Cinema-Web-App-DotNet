@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace CinemaWebApp.Models.MetaData
+﻿namespace CinemaWebApp.Models.MetaData
 {
     public class UserMetaData
     {

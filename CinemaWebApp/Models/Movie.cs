@@ -33,6 +33,7 @@ public partial class Movie
     [Unicode(false)]
     public string Description { get; set; } = null!;
 
+    [Display(Name = "Release Year")]
     [Column("release_year")]
     [StringLength(4)]
     [Unicode(false)]
