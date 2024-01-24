@@ -69,9 +69,19 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.RemainingNoOfSeats)
                     </td>
-                    <td>
-                        <a asp-action="BookTickets" asp-controller="Reservations" asp-route-screeningId="@item.Id">Book Tickets</a>
-                    </td>
+                    @if(item.RemainingNoOfSeats > 0)
+                    {
+                        <td>
+                            <a asp-action="BookTickets" asp-controller="Reservations" asp-route-screeningId="@item.Id">Book Tickets</a>
+                        </td>
+                    }
+                    else
+                    {
+                        <td>
+                            <p class="text-danger">Sold Out</p>
+                        </td>
+                    }
+
                 </tr>
             }
         </tbody>
