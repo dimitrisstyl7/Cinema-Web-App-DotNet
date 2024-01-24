@@ -32,14 +32,19 @@ namespace CinemaWebApp.Controllers
                 return NotFound();
             }
 
-            var cinema = await _context.Cinemas
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (cinema == null)
+            var cinemaScreenings = await _context.Screenings
+                .Include(s => s.Movie)
+                .Include(s => s.ScreeningRoom)
+                .Where(s => s.ScreeningRoom.CinemaId == id)
+                .GroupBy(s => s.Movie)
+                .ToListAsync();
+
+            if (cinemaScreenings == null)
             {
                 return NotFound();
             }
 
-            return View(cinema);
+            return View(cinemaScreenings);
         }
 
         // GET: Cinemas/Create

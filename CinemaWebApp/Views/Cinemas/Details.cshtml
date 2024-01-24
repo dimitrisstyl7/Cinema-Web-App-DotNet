@@ -1,54 +1,47 @@
-﻿@model CinemaWebApp.Models.Cinema
+﻿@model IEnumerable<IGrouping<Movie, Screening>>
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Cinema Program";
 }
 
-<h1>Details</h1>
+<h1>Program</h1>
 
-<div>
-    <h4>Cinema</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Address)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Address)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.City)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.City)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ZipCode)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ZipCode)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Email)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Email)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.NoOfScreeningRooms)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.NoOfScreeningRooms)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+@foreach (var group in Model)
+{
+    <br />
+    <h3 class="text-success">@group.Key.Title</h3>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(modelItem => group.First().Movie.Description)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(modelItem => group.First().Movie.Duration)
+                </th>
+                <th>...........</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in group)
+            {
+                <tr>
+                    <td class="col-4">
+                        @Html.DisplayFor(modelItem => item.StartTime)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ScreeningRoom.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.RemainingNoOfSeats)
+                    </td>
+                    <td>
+                        <a asp-action="Delete" asp-controller="ContentAdmins" asp-route-id="@item.Id">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+        <tfoot></tfoot>
+    </table>
+}
+
