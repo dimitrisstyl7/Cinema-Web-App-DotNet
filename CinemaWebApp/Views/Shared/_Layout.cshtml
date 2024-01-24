@@ -29,8 +29,11 @@
                         <li class="nav-item" @(!IsNotAuthenticated() ? "" : "hidden")>
                             <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="SignOut">Sign out</a>
                         </li>
-                        <li class="nav-item" @(IsContentAdmin() ? "" : "hidden")>
+                        <li class="nav-item" @(IsContentAdminAndMoviesController() ? "" : "hidden")>
                             <a class="nav-link text-dark" asp-area="" asp-controller="Screenings" asp-action="Index">Screenings</a>
+                        </li>
+                        <li class="nav-item" @(IsContentAdminAndScreeningsController() ? "" : "hidden")>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="ContentAdmins" asp-action="Index">Movies</a>
                         </li>
                     </ul>
                 </div>
@@ -70,9 +73,14 @@
         var currentPath = Context.Request.Path.ToString();
         return currentPath.Equals("/") || currentPath.StartsWith("/Home") || currentPath.StartsWith("/Account");
     }
-    private bool IsContentAdmin()
+    private bool IsContentAdminAndMoviesController()
     {
         var currentPath = Context.Request.Path.ToString();
-        return currentPath.StartsWith("/ContentAdmins");
+        return currentPath.StartsWith("/ContentAdmins") || currentPath.StartsWith("/Movies");
+    }
+    private bool IsContentAdminAndScreeningsController()
+    {
+        var currentPath = Context.Request.Path.ToString();
+        return currentPath.StartsWith("/Screenings");
     }
 };
