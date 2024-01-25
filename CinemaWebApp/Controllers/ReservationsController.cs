@@ -54,7 +54,7 @@ namespace CinemaWebApp.Controllers
         // GET: Reservations/Create
         public IActionResult Create(int id)
         {
-            int customerId = 2;
+            int customerId = 1;
 
             // Check if a reservation already exists for the given customer and screening
             var existingReservation = _context.Reservations

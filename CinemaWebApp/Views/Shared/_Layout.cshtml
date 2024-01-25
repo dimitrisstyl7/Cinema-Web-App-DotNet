@@ -35,6 +35,9 @@
                         <li class="nav-item" @(IsContentAdminAndScreeningsController() ? "" : "hidden")>
                             <a class="nav-link text-dark" asp-area="" asp-controller="ContentAdmins" asp-action="Index">Movies</a>
                         </li>
+                        <li class="nav-item" @(IsCustomer() ? "" : "hidden")>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Reservations" asp-action="Index" asp-route-id="1">Reservations History</a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -76,11 +79,16 @@
     private bool IsContentAdminAndMoviesController()
     {
         var currentPath = Context.Request.Path.ToString();
-            return !currentPath.Equals("/ContentAdmins/Create") && (currentPath.StartsWith("/ContentAdmins") || currentPath.StartsWith("/Movies"));
+        return !currentPath.Equals("/ContentAdmins/Create") && (currentPath.StartsWith("/ContentAdmins") || currentPath.StartsWith("/Movies"));
     }
     private bool IsContentAdminAndScreeningsController()
     {
         var currentPath = Context.Request.Path.ToString();
         return currentPath.StartsWith("/Screenings");
+    }
+    private bool IsCustomer()
+    {
+        var currentPath = Context.Request.Path.ToString();
+        return currentPath.StartsWith("/Customers") || currentPath.StartsWith("/Cinemas") || currentPath.StartsWith("/Reservations");
     }
 }
