@@ -54,17 +54,21 @@ namespace CinemaWebApp.Controllers
         // GET: Reservations/Create
         public IActionResult Create(int id)
         {
+            /*
+             * We assume that the customer is already logged in and that the customer id is 1.
+             * We hardcode the customer id because in this project we don't have an authentication/session management system.
+             */
             int customerId = 1;
 
             // Check if a reservation already exists for the given customer and screening
-            var existingReservation = _context.Reservations
-                .FirstOrDefault(r => r.CustomerId == customerId && r.ScreeningId == id);
+            var existingReservation = _context.Reservations.Include(r => r.Screening.ScreeningRoom).FirstOrDefault(r => r.CustomerId == customerId && r.ScreeningId == id);
 
             if (existingReservation != null)
             {
                 // Reservation already exists, set ViewData to indicate that
                 ViewData["ReservationExists"] = true;
-                ViewData["ReservationId"] = existingReservation.Id; // Pass the existing reservation ID if needed
+                ViewData["ReservationId"] = existingReservation.Id; // Pass the existing reservation id if needed
+                ViewData["CinemaId"] = existingReservation.Screening.ScreeningRoom.CinemaId; // Pass the cinema id
                 return View();
             }
 
@@ -87,6 +91,7 @@ namespace CinemaWebApp.Controllers
             // Pass the retrieved data to the view
             ViewData["Customer"] = customer;
             ViewData["Screening"] = screening;
+            ViewData["CinemaId"] = screening.ScreeningRoom.CinemaId; // Pass the cinema id
 
             return View();
         }
@@ -156,7 +161,7 @@ namespace CinemaWebApp.Controllers
             await _context.SaveChangesAsync();
 
             // Redirect to the Index action
-            return RedirectToAction(nameof(Index), new { id = reservation.CustomerId });
+            return RedirectToAction(nameof(Details), new { id = reservation.CustomerId });
         }
 
         private bool ReservationExists(int id)
