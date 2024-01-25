@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CinemaWebApp.Models;
 
@@ -14,14 +13,14 @@ namespace CinemaWebApp.Controllers
             _context = context;
         }
 
-        // GET: Reservations
+        // GET: Reservations/Index/{ReservationId}
         public async Task<IActionResult> Index(int id)
         {
             var cinemaAppDBContext = _context.Reservations.Include(r => r.Customer).Where(r => id == r.CustomerId).Include(r => r.Screening).Include(r => r.Screening.ScreeningRoom).Include(r => r.Screening.Movie).Include(r => r.Customer.User);
             return View(await cinemaAppDBContext.ToListAsync());
         }
 
-        // GET: Reservations/Details/5
+        // GET: Reservations/Details/{ReservationId}
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -51,7 +50,7 @@ namespace CinemaWebApp.Controllers
             return View(reservation);
         }
 
-        // GET: Reservations/Create
+        // GET: Reservations/Create/{ScreeningId}
         public IActionResult Create(int id)
         {
             /*
@@ -162,11 +161,6 @@ namespace CinemaWebApp.Controllers
 
             // Redirect to the Index action
             return RedirectToAction(nameof(Details), new { id = reservation.CustomerId });
-        }
-
-        private bool ReservationExists(int id)
-        {
-            return _context.Reservations.Any(e => e.Id == id);
         }
     }
 }
