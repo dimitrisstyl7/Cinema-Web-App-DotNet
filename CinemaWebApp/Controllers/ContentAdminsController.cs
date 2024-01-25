@@ -39,7 +39,7 @@ namespace CinemaWebApp.Controllers
         public async Task<IActionResult> Create([Bind("User, CinemaId")] ContentAdmin contentAdmin)
         {
             ModelState.Remove(nameof(ContentAdmin.Cinema));
-            ModelState.Remove(nameof(ContentAdmin.User) + "." + nameof(ContentAdmin.User.Role)); // User.Role
+            ModelState.Remove(nameof(ContentAdmin.User) + "." + nameof(ContentAdmin.User.Role)); // == ModelState.Remove(User.Role)
 
             if (!ModelState.IsValid)
             {
