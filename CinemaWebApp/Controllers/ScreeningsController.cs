@@ -21,26 +21,6 @@ namespace CinemaWebApp.Controllers
             return View(await cinemaAppDBContext.ToListAsync());
         }
 
-        // GET: Screenings/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var screening = await _context.Screenings
-                .Include(s => s.Movie)
-                .Include(s => s.ScreeningRoom)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (screening == null)
-            {
-                return NotFound();
-            }
-
-            return View(screening);
-        }
-
         // GET: Screenings/Create
         public IActionResult Create()
         {
@@ -58,7 +38,7 @@ namespace CinemaWebApp.Controllers
         {
             ModelState.Remove(nameof(screening.Movie));
             ModelState.Remove(nameof(screening.ScreeningRoom));
-            
+
             if (ModelState.IsValid)
             {
                 var remNumOfseats = _context.ScreeningRooms.Where(s => s.Id == screening.ScreeningRoomId).Select(s => s.TotalNoOfSeats).FirstOrDefault();
@@ -73,7 +53,7 @@ namespace CinemaWebApp.Controllers
             return View(screening);
         }
 
-        // GET: Screenings/Edit/5
+        // GET: Screenings/Edit/{ScreeningId}
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -91,17 +71,17 @@ namespace CinemaWebApp.Controllers
             return View(screening);
         }
 
-        // POST: Screenings/Edit/5
+        // POST: Screenings/Edit
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,MovieId,ScreeningRoomId,StartTime,RemainingNoOfSeats")] Screening screening)
+        public async Task<IActionResult> Edit([Bind("Id,MovieId,ScreeningRoomId,StartTime,RemainingNoOfSeats")] Screening screening)
         {
             ModelState.Remove(nameof(screening.Movie));
             ModelState.Remove(nameof(screening.ScreeningRoom));
 
-            if (id != screening.Id)
+            if (screening.Id == 0)
             {
                 return NotFound();
             }
@@ -134,7 +114,7 @@ namespace CinemaWebApp.Controllers
             return View(screening);
         }
 
-        // GET: Screenings/Delete/5
+        // GET: Screenings/Delete/{ScreeningId}
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -154,14 +134,15 @@ namespace CinemaWebApp.Controllers
             return View(screening);
         }
 
-        // POST: Screenings/Delete/5
+        // POST: Screenings/Delete/{ScreeningId}
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var screening = await _context.Screenings.FindAsync(id);
+            var screening = await _context.Screenings.Where(s => s.Id == id).Include(s => s.Reservations).FirstAsync();
             if (screening != null)
             {
+                _context.Reservations.RemoveRange(screening.Reservations);
                 _context.Screenings.Remove(screening);
             }
 
