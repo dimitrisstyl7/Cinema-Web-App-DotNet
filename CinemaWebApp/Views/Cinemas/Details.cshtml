@@ -6,9 +6,9 @@
 
 <h1>Program</h1>
 
-<p class="mt-4 text-secondary">
+<div class="mt-3 mb-3 text-secondary">
     @ViewBag.Message
-</p>
+</div>
 
 @foreach (var group in Model)
 {
@@ -73,7 +73,7 @@
                     <td class="col-3">
                         @Html.DisplayFor(modelItem => item.RemainingNoOfSeats)
                     </td>
-                    @if(item.RemainingNoOfSeats > 0)
+                    @if (item.RemainingNoOfSeats > 0)
                     {
                         <td class="col-1">
                             <a asp-action="Create" asp-controller="Reservations" asp-route-id="@item.Id">Book Tickets</a>
@@ -96,4 +96,3 @@
 <div>
     <a asp-action="" asp-controller="Customers">Back to Home</a>
 </div>
-
