@@ -39,6 +39,11 @@ namespace CinemaWebApp.Controllers
                 return NotFound();
             }
 
+            if (cinemaScreenings.Count == 0)
+            {
+                ViewData["message"] = "No screenings in the next 7 days.";
+            }
+
             return View(cinemaScreenings);
         }
 
