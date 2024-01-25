@@ -1,11 +1,10 @@
 ﻿@model CinemaWebApp.Models.ContentAdmin
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Create Content Admin";
 }
 
-<h1>Create</h1>
-<h4>ContentAdmin</h4>
+<h1>Add a new Content Admin</h1>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -39,7 +38,7 @@
             </div>
             <div class="form-group">
                 <label class="control-label">Cinema</label>
-                <select asp-for="CinemaId" class ="form-control" asp-items="ViewBag.CinemaId"></select>
+                <select asp-for="CinemaId" class="form-control" asp-items="ViewBag.CinemaId"></select>
             </div>
             <div class="form-group mt-3 mb-2">
                 <input type="submit" value="Create" class="btn btn-primary" />
@@ -51,4 +50,3 @@
 <div>
     <a asp-action="Index" asp-controller="AppAdmins">Back to List</a>
 </div>
-

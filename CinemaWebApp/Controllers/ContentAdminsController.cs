@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -19,18 +15,12 @@ namespace CinemaWebApp.Controllers
         }
 
 
-        // GET: ContentAdmins/Id
-        public async Task<IActionResult> Index(int? id)
+        // GET: ContentAdmins
+        public async Task<IActionResult> Index()
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-            
             var movies = await _context.Movies
                 .Include(m => m.Genre)
                 .ToListAsync();
-            ViewData["ContentAdminId"] = id;
             return View(movies);
         }
 
@@ -49,7 +39,7 @@ namespace CinemaWebApp.Controllers
         public async Task<IActionResult> Create([Bind("User, CinemaId")] ContentAdmin contentAdmin)
         {
             ModelState.Remove(nameof(ContentAdmin.Cinema));
-            ModelState.Remove(nameof(ContentAdmin.User) + "." + nameof(ContentAdmin.User.Role)); // User.Role
+            ModelState.Remove(nameof(ContentAdmin.User) + "." + nameof(ContentAdmin.User.Role)); // == ModelState.Remove(User.Role)
 
             if (!ModelState.IsValid)
             {

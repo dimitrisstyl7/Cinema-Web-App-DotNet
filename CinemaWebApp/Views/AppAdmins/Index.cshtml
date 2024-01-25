@@ -29,14 +29,14 @@
             @foreach (var item in group)
             {
                 <tr>
-                    <td class="col-4">
+                    <td>
                         @Html.DisplayFor(modelItem => item.User.FullName)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.User.Email)
                     </td>
                     <td>
-                        <a asp-action="Delete" asp-controller="ContentAdmins" asp-route-id="@item.Id">Delete</a>
+                        <a asp-action="Delete" asp-controller="ContentAdmins" asp-route-id="@item.Id" class="text-danger">Delete</a>
                     </td>
                 </tr>
             }

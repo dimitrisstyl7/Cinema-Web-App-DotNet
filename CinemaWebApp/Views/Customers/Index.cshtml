@@ -1,0 +1,45 @@
+﻿@model IEnumerable<CinemaWebApp.Models.Cinema>
+
+@{
+    ViewData["Title"] = "Customer";
+}
+
+<h1>Select Cinema</h1>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.City)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Address)
+            </th>
+            <th>
+                Action
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.City)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Address)
+                </td>
+                <td>
+                    <a asp-controller="Cinemas" asp-action="Details" asp-route-id="@item.Id">View program</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

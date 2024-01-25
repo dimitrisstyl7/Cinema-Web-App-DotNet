@@ -3,13 +3,70 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome to Cinema Web Application!</h1>
+    <h1 class="display-4">Welcome to our Cinema Web Application!</h1>
 </div>
-<p class="text-center mt-3">
-    Already have an account?
-    <a asp-action="SignIn" asp-controller="Account" class="text-primary">Sign in</a>
-</p>
-<p class="text-center mt-3">
-    Don't have an account?
-    <a asp-action="SignUp" asp-controller="Account" class="text-primary">Sign up</a>
-</p>
+<hr />
+<table class="mt-4 table table-striped">
+    <hr />
+    <thead>
+        <tr>
+            <th>
+                User Type
+            </th>
+            <th>
+                Email
+            </th>
+            <th>
+                Password
+            </th>
+            <th>
+                Go to Home Page
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                Customer
+            </td>
+            <td>
+                customer1@email.com
+            </td>
+            <td>
+                customer1
+            </td>
+            <td>
+                <a asp-controller="Customers" asp-action="Index">Customer</a>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Content Admin
+            </td>
+            <td>
+                contentAdmin1@email.com
+            </td>
+            <td>
+                contentAdmin1
+            </td>
+            <td>
+                <a asp-controller="ContentAdmins" asp-action="Index">Content Admin</a>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Application Admin
+            </td>
+            <td>
+                appAdmin1@email.com
+            </td>
+            <td>
+                appAdmin1
+            </td>
+            <td>
+                <a asp-controller="AppAdmins" asp-action="Index">Application Admin</a>
+            </td>
+        </tr>
+    </tbody>
+    <tfoot></tfoot>
+</table>

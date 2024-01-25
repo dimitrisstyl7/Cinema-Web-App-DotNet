@@ -1,0 +1,56 @@
+﻿@model IEnumerable<CinemaWebApp.Models.Reservation>
+
+@{
+    ViewData["Title"] = "Reservations";
+}
+
+<h1>Your Reservations</h1>
+<br />
+<h3 class="text-success">@Html.DisplayFor(modelItem => Model.First().Customer.User.FullName)</h3>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Screening.Movie)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Screening)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Screening.StartTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NoOfBookedSeats)
+            </th>
+            <th>
+                Actions
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Screening.Movie.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Screening.ScreeningRoom.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.Screening.StartTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NoOfBookedSeats)
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<div>
+    <a asp-controller="Customers">Back to Home</a>
+</div>

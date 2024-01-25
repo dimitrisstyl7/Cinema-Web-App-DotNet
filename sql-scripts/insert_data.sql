@@ -5,9 +5,10 @@ values ('customer'),
        ('content_admin');
 
 -- insert users into User table
--- username: customer1, password: customer1
--- username: appAdmin, password: appAdmin
--- username: contentAdmin1, password: contentAdmin1
+-- Sign-in credentials:
+-- email: customer1@email.com, password: customer1
+-- email: appAdmin@email.com, password: appAdmin
+-- email: contentAdmin1@email.com, password: contentAdmin1
 insert into [User] (role_id, username, email, first_name, last_name, password)
 values (1, 'customer1', 'customer1@email.com', 'Customer', 'One',
         '$2a$10$elKRD7GTtyImpjd155Q9eOXJxJha4mVxe0k4zyxmPehAU6SpZ6dBa');

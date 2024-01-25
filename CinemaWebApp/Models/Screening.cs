@@ -20,9 +20,11 @@ public partial class Screening
     [Column("screening_room_id")]
     public int ScreeningRoomId { get; set; }
 
+    [Display(Name = "Start Time")]
     [Column("start_time", TypeName = "datetime")]
     public DateTime StartTime { get; set; }
 
+    [Display(Name = "Remaining No. of Seats")]
     [Column("remaining_no_of_seats")]
     public int RemainingNoOfSeats { get; set; }
 
@@ -33,6 +35,7 @@ public partial class Screening
     [InverseProperty("Screening")]
     public virtual ICollection<Reservation> Reservations { get; set; } = new List<Reservation>();
 
+    [Display(Name = "Screening Room")]
     [ForeignKey("ScreeningRoomId")]
     [InverseProperty("Screenings")]
     public virtual ScreeningRoom ScreeningRoom { get; set; } = null!;

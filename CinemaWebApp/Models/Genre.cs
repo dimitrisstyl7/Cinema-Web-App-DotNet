@@ -14,6 +14,7 @@ public partial class Genre
     [Column("id")]
     public int Id { get; set; }
 
+    [Display(Name = "Genre")]
     [Column("name")]
     [StringLength(20)]
     [Unicode(false)]

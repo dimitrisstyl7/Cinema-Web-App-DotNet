@@ -20,6 +20,7 @@ public partial class Reservation
     [Column("screening_id")]
     public int ScreeningId { get; set; }
 
+    [Display(Name = "No of booked seats")]
     [Column("no_of_booked_seats")]
     public int NoOfBookedSeats { get; set; }
 
