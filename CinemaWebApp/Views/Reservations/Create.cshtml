@@ -73,6 +73,8 @@ else
     </div>
 
     <div>
-        <a asp-action="Details" asp-controller="Cinemas" asp-route-id="@ViewBag.Customer.UserId">Back to Screening List</a>
+        <a asp-action="Details" asp-controller="Cinemas" asp-route-id="@ViewBag.screening.ScreeningRoom.CinemaId">Back to Screening List</a>
     </div>
 }
+<br />
+<a asp-controller="Cinemas" asp-action="Details" asp-route-id="@ViewBag.CinemaId">Back to Screenings</a>
