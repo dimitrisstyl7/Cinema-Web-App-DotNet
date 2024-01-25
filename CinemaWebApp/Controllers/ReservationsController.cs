@@ -16,7 +16,13 @@ namespace CinemaWebApp.Controllers
         // GET: Reservations/Index/{ReservationId}
         public async Task<IActionResult> Index(int id)
         {
-            var cinemaAppDBContext = _context.Reservations.Include(r => r.Customer).Where(r => id == r.CustomerId).Include(r => r.Screening).Include(r => r.Screening.ScreeningRoom).Include(r => r.Screening.Movie).Include(r => r.Customer.User);
+            var cinemaAppDBContext = _context.Reservations.Include(r => r.Customer)
+                .Where(r => id == r.CustomerId)
+                .Include(r => r.Screening)
+                .Include(r => r.Screening.ScreeningRoom)
+                .Include(r => r.Screening.Movie)
+                .Include(r => r.Customer.User)
+                .OrderBy(r => r.Screening.StartTime);
             return View(await cinemaAppDBContext.ToListAsync());
         }
 
