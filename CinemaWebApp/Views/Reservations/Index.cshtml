@@ -5,12 +5,10 @@
 }
 
 <h1>Your Reservations</h1>
-
+<br />
 <h3 class="text-success">@Html.DisplayFor(modelItem => Model.First().Customer.User.FullName)</h3>
-<p>
-    <h6><a asp-action="Create">Create New</a></h6>
-</p>
-<table class="table">
+
+<table class="table table-striped">
     <thead>
         <tr>
             <th>

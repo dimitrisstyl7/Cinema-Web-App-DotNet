@@ -71,10 +71,7 @@ else
             </form>
         </div>
     </div>
-
-    <div>
-        <a asp-action="Details" asp-controller="Cinemas" asp-route-id="@ViewBag.screening.ScreeningRoom.CinemaId">Back to Screening List</a>
-    </div>
 }
-<br />
-<a asp-controller="Cinemas" asp-action="Details" asp-route-id="@ViewBag.CinemaId">Back to Screenings</a>
+<div class="mt-1">
+    <a asp-controller="Cinemas" asp-action="Details" asp-route-id="@ViewBag.CinemaId">Back to Screenings</a>
+</div>
