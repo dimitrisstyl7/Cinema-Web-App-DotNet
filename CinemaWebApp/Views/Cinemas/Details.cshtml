@@ -6,6 +6,10 @@
 
 <h1>Program</h1>
 
+<p class="mt-4 text-secondary">
+    @ViewBag.Message
+</p>
+
 @foreach (var group in Model)
 {
     <br />
@@ -81,7 +85,6 @@
                             <p class="text-danger">Sold Out</p>
                         </td>
                     }
-
                 </tr>
             }
         </tbody>
