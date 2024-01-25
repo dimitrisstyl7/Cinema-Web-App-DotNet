@@ -15,7 +15,7 @@ namespace CinemaWebApp.Controllers
             _context = context;
         }
 
-        // GET: Movies/Details/5
+        // GET: Movies/Details/{MovieId}
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -34,10 +34,9 @@ namespace CinemaWebApp.Controllers
             return View(movie);
         }
 
-        // GET: Movies/Create/ContentAdminId
-        public IActionResult Create(int? id)
+        // GET: Movies/Create
+        public IActionResult Create()
         {
-            ViewData["ContentAdminId"] = id;
             ViewData["GenreId"] = new SelectList(_context.Genres, "Id", "Name");
             return View();
         }
@@ -77,7 +76,7 @@ namespace CinemaWebApp.Controllers
             return RedirectToAction("Index", "ContentAdmins");
         }
 
-        // GET: Movies/Edit/5
+        // GET: Movies/Edit/{MovieId}
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -94,16 +93,16 @@ namespace CinemaWebApp.Controllers
             return View(movie);
         }
 
-        // POST: Movies/Edit/5
+        // POST: Movies/Edit
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,GenreId,Title,Duration,Content,Description,ReleaseYear,Director")] Movie movie)
+        public async Task<IActionResult> Edit([Bind("Id,GenreId,Title,Duration,Content,Description,ReleaseYear,Director")] Movie movie)
         {
             ModelState.Remove(nameof(movie.Genre));
 
-            if (id != movie.Id)
+            if (movie.Id == 0)
             {
                 return NotFound();
             }
@@ -149,7 +148,7 @@ namespace CinemaWebApp.Controllers
             return RedirectToAction("Index", "ContentAdmins");
         }
 
-        // GET: Movies/Delete/5
+        // GET: Movies/Delete/{MovieId}
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -168,14 +167,16 @@ namespace CinemaWebApp.Controllers
             return View(movie);
         }
 
-        // POST: Movies/Delete/5
+        // POST: Movies/Delete/{MovieId}
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var movie = await _context.Movies.FindAsync(id);
+            var movie = await _context.Movies.Where(m => m.Id == id).Include(m => m.Screenings).ThenInclude(s => s.Reservations).FirstAsync();
             if (movie != null)
             {
+                _context.Reservations.RemoveRange(movie.Screenings.SelectMany(s => s.Reservations));
+                _context.Screenings.RemoveRange(movie.Screenings);
                 _context.Movies.Remove(movie);
             }
 
