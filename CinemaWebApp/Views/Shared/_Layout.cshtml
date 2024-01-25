@@ -36,7 +36,8 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="ContentAdmins" asp-action="Index">Movies</a>
                         </li>
                         <li class="nav-item" @(IsCustomer() ? "" : "hidden")>
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Reservations" asp-action="Index" asp-route-id="1">Reservations History</a>
+                            <!-- We hardcode the customer id because in this project we don't have an authentication/session management system. -->
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Reservations" asp-action="Index" asp-route-id="1">Reservation History</a>
                         </li>
                     </ul>
                 </div>
